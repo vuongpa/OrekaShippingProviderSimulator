@@ -8,7 +8,7 @@ class GatewayEnvironment:
         self.secret = secret
 
 
-TEST = GatewayEnvironment("test", "https://dev.oreka.vn/", "oreka-tracking-sim-local")
+TEST = GatewayEnvironment("test", "https://dev.oreka.vn/", "oreka-tracking-sim-dev")
 LOCAL = GatewayEnvironment("local", "http://localhost:8888", "oreka-tracking-sim-local")
 
 ENVIRONMENTS = {environment.name: environment for environment in (TEST, LOCAL)}

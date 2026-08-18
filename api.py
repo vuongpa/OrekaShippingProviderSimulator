@@ -7,6 +7,9 @@ class ApiError(Exception):
     pass
 
 
+DEFAULT_USER_AGENT = "OrekaShippingProviderSimulator/1.0"
+
+
 class SimulatorApi:
     def __init__(self, base_url, secret, timeout=90):
         self.base_url = base_url.rstrip("/")
@@ -16,9 +19,8 @@ class SimulatorApi:
     def _post(self, path, payload, headers=None, raw_body=None):
         url = f"{self.base_url}{path}"
         body = raw_body.encode("utf-8") if raw_body is not None else json.dumps(payload).encode("utf-8")
-        request_headers = {"Content-Type": "application/json"}
-        if headers:
-            request_headers = dict(headers)
+        request_headers = dict(headers) if headers else {"Content-Type": "application/json"}
+        request_headers.setdefault("User-Agent", DEFAULT_USER_AGENT)
         request = urllib.request.Request(url, data=body, headers=request_headers, method="POST")
         try:
             with urllib.request.urlopen(request, timeout=self.timeout) as response:
