@@ -1,0 +1,37 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: pyinstaller --noconfirm --clean --windowed --onefile --name OrekaShippingProviderSimulator app.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OrekaShippingProviderSimulator-windows
+          path: dist/OrekaShippingProviderSimulator.exe
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: pyinstaller --noconfirm --clean --windowed --name OrekaShippingProviderSimulator app.py
+      - run: cd dist && zip -qry OrekaShippingProviderSimulator-macos.zip OrekaShippingProviderSimulator.app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OrekaShippingProviderSimulator-macos
+          path: dist/OrekaShippingProviderSimulator-macos.zip
