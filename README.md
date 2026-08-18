@@ -18,17 +18,21 @@ Các lệnh khác:
 | `make` | liệt kê lệnh |
 | `make dev` | chạy app |
 | `make check` | kiểm tra python + tkinter |
+| `make build` | đóng gói bản cho hệ điều hành đang chạy |
 | `make build-macos` | đóng gói `.app` + `.zip` vào `dist/` (tạo `.venv`, cài pyinstaller) |
+| `make build-windows` | đóng gói `.exe` vào `dist/` — phải chạy trên Windows |
 | `make clean` | xoá `build/`, `dist/` |
 | `make distclean` | xoá cả `.venv` |
 
 Bản đóng gói để đưa cho QA không cài Python:
 
-- macOS: `make build-macos` → `dist/OrekaShippingProviderSimulator-macos.zip`
-- Windows: chạy `build_windows.bat` **trên máy Windows** → `dist\OrekaShippingProviderSimulator.exe`
+- macOS: `make build-macos` → `dist/OrekaShippingProviderSimulator-macos.zip` (arm64, máy Mac Intel không chạy được)
+- Windows: `make build-windows` trong Git Bash, hoặc double-click `build_windows.bat` nếu máy không có `make`
+  → `dist\OrekaShippingProviderSimulator.exe`
 
-PyInstaller không cross-compile, nên `.exe` phải build từ Windows. Không có máy Windows thì
-dùng `.github/workflows/build.yml` (GitHub Actions dựng cả hai bản, tải về ở tab Artifacts).
+PyInstaller **không cross-compile**: `.exe` phải build từ máy Windows, `.app` phải build từ máy
+macOS — chạy nhầm chỗ thì lane tương ứng dừng ngay và in hướng dẫn. Không có đủ hai máy thì
+dùng `.github/workflows/build.yml`, GitHub Actions dựng cả hai bản, tải về ở tab Artifacts.
 
 macOS dùng python từ python.org hoặc homebrew đều có sẵn tkinter. Nếu báo thiếu tkinter:
 `brew install python-tk`.
